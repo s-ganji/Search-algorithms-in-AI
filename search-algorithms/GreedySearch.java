@@ -1,7 +1,7 @@
 import java.util.*;
-public class A {
+public class GreedySearch {
 
-    public void A(Node source,Node goal) {
+    public void greedysearch(Node source,Node goal) {
         int expandNodes = 0;
         int seenNodes = 0;
         Problem problem = new Problem();
@@ -45,21 +45,20 @@ public class A {
             double cost=0;
             for (Edge e : current.adjacencies) {
                 seenNodes++;
-                if(problem.heuristic(e.target.value)+e.target.pathCost<m) {
+                if(problem.heuristic(e.target.value)<m) {
                     child = e.target;
                     cost=e.cost;
                     m = problem.heuristic(e.target.value);
                 }
             }
             if (!(queue.contains(child) || explored.contains(child))
-                    && !path.contains(child)) {
+                        && !path.contains(child)) {
 
-                child.pathCost = current.pathCost + cost;
-                child.parent = current;
+                    child.pathCost = current.pathCost + cost;
+                    child.parent = current;
+                    queue.add(child);
 
-                queue.add(child);
-
-            }
+                }
 
 
 
@@ -94,15 +93,16 @@ public class A {
     public static void main(String[] args) {
         Problem p=new Problem();
         p.actions();
-        System.out.println("A*(graph search):");
-        A astar=new A();
-        astar.A(p.n1, p.n13);
-        List<Node> path8 = astar.printPath(p.n13);
+        System.out.println("greedy best-first search(graph search):");
+        GreedySearch greedySearch=new GreedySearch();
+        greedySearch.greedysearch(p.n1, p.n13);
+        List<Node> path8 = greedySearch.printPath(p.n13);
         System.out.println("Path: " + path8);
         System.out.println();
+    }
+
 
     }
-}
 
 
 

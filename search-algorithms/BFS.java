@@ -1,23 +1,22 @@
 import java.util.*;
-public class A {
 
-    public void A(Node source,Node goal) {
-        int expandNodes = 0;
-        int seenNodes = 0;
+public class BFS {
+
+    public void bfs(Node source, Node goal) {
+
+        int expandNodes=0;
+        int seenNodes=0;
+
         Problem problem = new Problem();
 
         List<Node> list = new ArrayList<Node>();
-
-        source.pathCost = 0;
-
-        Queue<Node> queue = new LinkedList<>();
+        Queue<Node> queue = new LinkedList<Node>();
 
         queue.add(source);
 
         Set<Node> explored = new HashSet<Node>();
 
         List<Node> path = new ArrayList<Node>();
-        Node max = source;
 
         do {
             path.clear();
@@ -39,41 +38,27 @@ public class A {
 
 
             expandNodes++;
-
-            int m = 10000;
-            Node child=null;
-            double cost=0;
             for (Edge e : current.adjacencies) {
-                seenNodes++;
-                if(problem.heuristic(e.target.value)+e.target.pathCost<m) {
-                    child = e.target;
-                    cost=e.cost;
-                    m = problem.heuristic(e.target.value);
+                Node child = e.target;
+                double cost = e.cost;
+
+                if (!(queue.contains(child) || explored.contains(child))
+                        && !path.contains(child)) {
+
+
+                    child.pathCost = current.pathCost + cost;
+                    child.parent = current;
+                    queue.add(child);
+                    seenNodes++;
                 }
             }
-            if (!(queue.contains(child) || explored.contains(child))
-                    && !path.contains(child)) {
-
-                child.pathCost = current.pathCost + cost;
-                child.parent = current;
-
-                queue.add(child);
-
-            }
-
-
-
-        }
-        while (!queue.isEmpty());
+        } while (!queue.isEmpty());
 
 
         System.out.printf("number of seen nodes:");
         System.out.println(seenNodes+1);
         System.out.printf("number of expand nodes:");
         System.out.println(expandNodes);
-
-
-
     }
 
     public static List<Node> printPath(Node target) {
@@ -81,29 +66,25 @@ public class A {
         for (Node node = target; node != null; node = node.parent) {
             path.add(node);
         }
+
         Collections.reverse(path);
 
-        System.out.printf("path cost:"+target.pathCost);
-        System.out.println();
+        System.out.printf("path cost:");
+        System.out.println(path.size()-1);
         return path;
 
     }
 
-
-
     public static void main(String[] args) {
         Problem p=new Problem();
         p.actions();
-        System.out.println("A*(graph search):");
-        A astar=new A();
-        astar.A(p.n1, p.n13);
-        List<Node> path8 = astar.printPath(p.n13);
-        System.out.println("Path: " + path8);
+        System.out.println("Breadth first search(Graph search):");
+        BFS bfs = new BFS();
+        bfs.bfs(p.n1, p.n13);
+        List<Node> path = bfs.printPath(p.n13);
+        System.out.println("Path: " + path);
         System.out.println();
-
     }
+
+
 }
-
-
-
-
