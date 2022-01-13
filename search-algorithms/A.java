@@ -1,0 +1,109 @@
+import java.util.*;
+public class A {
+
+    public void A(Node source,Node goal) {
+        int expandNodes = 0;
+        int seenNodes = 0;
+        Problem problem = new Problem();
+
+        List<Node> list = new ArrayList<Node>();
+
+        source.pathCost = 0;
+
+        Queue<Node> queue = new LinkedList<>();
+
+        queue.add(source);
+
+        Set<Node> explored = new HashSet<Node>();
+
+        List<Node> path = new ArrayList<Node>();
+        Node max = source;
+
+        do {
+            path.clear();
+            Node current = queue.poll();
+            explored.add(current);
+
+            for (Node node = current; node != null; node = node.parent) {
+                path.add(node);
+            }
+
+            if (problem.goalTest(current.value)) {
+
+                goal.parent = current.parent;
+                goal.pathCost = current.pathCost;
+                seenNodes++;
+                break;
+
+            }
+
+
+            expandNodes++;
+
+            int m = 10000;
+            Node child=null;
+            double cost=0;
+            for (Edge e : current.adjacencies) {
+                seenNodes++;
+                if(problem.heuristic(e.target.value)+e.target.pathCost<m) {
+                    child = e.target;
+                    cost=e.cost;
+                    m = problem.heuristic(e.target.value);
+                }
+            }
+            if (!(queue.contains(child) || explored.contains(child))
+                    && !path.contains(child)) {
+
+                child.pathCost = current.pathCost + cost;
+                child.parent = current;
+
+                queue.add(child);
+
+            }
+
+
+
+        }
+        while (!queue.isEmpty());
+
+
+        System.out.printf("number of seen nodes:");
+        System.out.println(seenNodes+1);
+        System.out.printf("number of expand nodes:");
+        System.out.println(expandNodes);
+
+
+
+    }
+
+    public static List<Node> printPath(Node target) {
+        List<Node> path = new ArrayList<Node>();
+        for (Node node = target; node != null; node = node.parent) {
+            path.add(node);
+        }
+        Collections.reverse(path);
+
+        System.out.printf("path cost:"+target.pathCost);
+        System.out.println();
+        return path;
+
+    }
+
+
+
+    public static void main(String[] args) {
+        Problem p=new Problem();
+        p.actions();
+        System.out.println("A*(graph search):");
+        A astar=new A();
+        astar.A(p.n1, p.n13);
+        List<Node> path8 = astar.printPath(p.n13);
+        System.out.println("Path: " + path8);
+        System.out.println();
+
+    }
+}
+
+
+
+
