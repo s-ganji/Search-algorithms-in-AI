@@ -2,7 +2,7 @@
 Implementation of graph and tree search algorithms for solving two problems, Artificial Intelligence course assignment, Fall 2018
 ## Problem #1
 The graph of the map of Romania is as follows: <br/>
-![Screenshot (3020)](https://user-images.githubusercontent.com/38253772/149795447-3cffac2e-eb2c-4ade-b7b7-ce6d1d010c3b.png)
+![Screenshot (3020)](https://user-images.githubusercontent.com/38253772/149795910-b99b2953-40ae-4a9d-aa3a-6bb9ee2732dc.png)
 Imagine we want to travel from Arad city to Bucharest.<br>
 The list in the right side of the graph indicates the hurestic values for different cities, direct distances from Bucharest city. <br/>
 This problem should be solved with the use of Depth-first search,Breadth-first search, Uniform-Cost Search, Greedy best-first search and A^* algorithms.<br/>
